@@ -91,33 +91,33 @@
         <p class="success-message">Bienvenue ! Connexion réussie.</p>
     </div>
 
-    <script>
-        // Fonction de gestion de la soumission du formulaire
-        document.getElementById("loginForm").addEventListener("submit", function(event) {
-            event.preventDefault(); // Empêcher la soumission du formulaire par défaut
+    <!-- ... partie head et styles inchangée ... -->
 
-            // Récupération des valeurs du formulaire
-            const username = document.getElementById("username").value;
-            const password = document.getElementById("password").value;
+<script>
+    document.getElementById("loginForm").addEventListener("submit", function(event) {
+        event.preventDefault();
 
-            // Vérification des informations de connexion
-            if (username === "CSU" && password === "CSU67") {
-                // Connexion réussie
-                document.querySelector(".success-message").style.display = "block";
-                document.querySelector(".error-message").style.display = "none";
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
 
-                // Simuler la redirection ou l'accès à la page protégée
-                setTimeout(() => {
-                    // Redirection vers une autre page (par exemple : dashboard.html)
-                   window.location.href = "./index.html"; // Remplacez "dashboard.html" par votre page cible
-                }, 2000);
-            } else {
-                // Connexion échouée
-                document.querySelector(".error-message").style.display = "block";
-                document.querySelector(".success-message").style.display = "none";
-            }
-        });
-    </script>
+        if (username === "CSU" && password === "CSU67") {
+            document.querySelector(".success-message").style.display = "block";
+            document.querySelector(".error-message").style.display = "none";
+
+            // ✅ Enregistrement de l'état de connexion
+            localStorage.setItem("loggedIn", "true");
+
+            // ✅ Redirection vers la page d'accueil CSU
+            setTimeout(() => {
+                window.location.href = "index.html";
+            }, 1000);
+        } else {
+            document.querySelector(".error-message").style.display = "block";
+            document.querySelector(".success-message").style.display = "none";
+        }
+    });
+</script>
+
 
 </body>
 </html>
