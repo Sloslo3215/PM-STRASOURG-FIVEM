@@ -209,25 +209,3 @@
       }
     }
 
-    function demanderSuppression(index) {
-      bulletinIndexToDelete = index;
-      confirmationMessage.classList.add('show');
-    }
-
-    function confirmerSuppression() {
-      if (bulletinIndexToDelete !== null) {
-        bulletins.splice(bulletinIndexToDelete, 1);
-        localStorage.setItem('bulletins', JSON.stringify(bulletins));
-        location.reload();
-      }
-      annulerSuppression();
-    }
-
-    function annulerSuppression() {
-      confirmationMessage.classList.remove('show');
-      bulletinIndexToDelete = null;
-    }
-  </script>
-
-</body>
-</html>
