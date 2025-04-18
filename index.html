@@ -1,136 +1,200 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Menu principal</title>
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background: url('logoPM.png') no-repeat center center fixed;
-      background-size: 400px;
-      color: #2c3e50;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      position: relative;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion et Menu Principal</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: url('logoPM.png') no-repeat center center fixed;
+            background-size: 400px;
+            color: #2c3e50;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            position: relative;
+        }
 
-    body::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.307);
-      z-index: -1;
-    }
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.307);
+            z-index: -1;
+        }
 
-    .window-container {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-      max-width: 900px;
-      width: 100%;
-      padding: 30px;
-      background-color: rgba(255, 255, 255, 0.6);
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    }
+        .login-container, .window-container {
+            display: none;
+            position: absolute;
+        }
 
-    .window {
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      text-align: center;
-      position: relative;
-    }
+        .login-container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
 
-    .window h3 {
-      color: #003366;
-    }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
 
-    .window button {
-      padding: 10px 20px;
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 16px;
-      margin-top: 20px;
-      transition: background-color 0.3s ease;
-    }
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
 
-    .window button:hover {
-      background-color: #0056b3;
-    }
+        .btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
 
-    @media screen and (max-width: 600px) {
-      .window-container {
-        grid-template-columns: 1fr;
-      }
-    }
+        .btn:hover {
+            background-color: #45a049;
+        }
 
-    .logout-btn {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      padding: 10px 15px;
-      font-size: 14px;
-      background-color: #dc3545;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
+        .error-message {
+            color: red;
+            text-align: center;
+            display: none;
+        }
 
-    .logout-btn:hover {
-      background-color: #b02a37;
-    }
-  </style>
+        .success-message {
+            color: green;
+            text-align: center;
+            display: none;
+        }
+
+        .window-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            max-width: 900px;
+            width: 100%;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.6);
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .window {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .window h3 {
+            color: #003366;
+        }
+
+        .window button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .window button:hover {
+            background-color: #0056b3;
+        }
+
+        @media screen and (max-width: 600px) {
+            .window-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
 
-  <!-- 🔐 Sécurité : Redirection si non connecté -->
-  <script>
-    if (localStorage.getItem("loggedIn") !== "true") {
-      window.location.href = "code_cession.html";
-    }
-  </script>
+    <!-- Section de connexion -->
+    <div class="login-container" id="login-container">
+        <h2>Connexion utilisateur</h2>
+        <form id="loginForm">
+            <input type="text" id="username" class="input-field" placeholder="Code utilisateur" required>
+            <input type="password" id="password" class="input-field" placeholder="Mot de passe" required>
+            <button type="submit" class="btn">Se connecter</button>
+        </form>
+        <p class="error-message">Code utilisateur ou mot de passe incorrect</p>
+        <p class="success-message">Bienvenue ! Connexion réussie.</p>
+    </div>
 
-  <!-- 🔓 Bouton Déconnexion -->
-  <button class="logout-btn" onclick="logout()">Déconnexion</button>
-  <script>
-    function logout() {
-      localStorage.removeItem("loggedIn");
-      window.location.href = "code_cession.html";
-    }
-  </script>
+    <!-- Menu principal -->
+    <div class="window-container" id="menu-container">
+        <div class="window">
+            <h3>Bulletin de service</h3>
+            <button onclick="window.location.href='bulletin_service.html'">Accéder</button>
+        </div>
+        <div class="window">
+            <h3>Archive bulletin</h3>
+            <button onclick="window.location.href='archive_bulletin.html'">Accéder</button>
+        </div>
+        <div class="window">
+            <h3>Rapport d'intervention</h3>
+            <button onclick="window.location.href='rapport_intervention.html'">Accéder</button>
+        </div>
+        <div class="window">
+            <h3>Archive Rapport</h3>
+            <button onclick="window.location.href='archive_rapport.html'">Accéder</button>
+        </div>
+    </div>
 
-  <!-- 🏠 Menu CSU -->
-  <div class="window-container">
-    <div class="window">
-      <h3>Bulletin de service</h3>
-      <button onclick="window.location.href='bulletin_service.html'">Accéder</button>
-    </div>
-    <div class="window">
-      <h3>Archive bulletin</h3>
-      <button onclick="window.location.href='archive_bulletin.html'">Accéder</button>
-    </div>
-    <div class="window">
-      <h3>Rapport d'intervention</h3>
-      <button onclick="window.location.href='rapport_intervention.html'">Accéder</button>
-    </div>
-    <div class="window">
-      <h3>Archive Rapport</h3>
-      <button onclick="window.location.href='archive_rapport.html'">Accéder</button>
-    </div>
-  </div>
+    <script>
+        // Afficher la page de connexion d'abord
+        document.getElementById("login-container").style.display = "block";
+        document.getElementById("menu-container").style.display = "none";
+
+        // Fonction de gestion de la soumission du formulaire de connexion
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Empêcher la soumission du formulaire par défaut
+
+            // Récupération des valeurs du formulaire
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            // Vérification des informations de connexion
+            if (username === "CSU" && password === "CSU67") {
+                // Connexion réussie
+                document.querySelector(".success-message").style.display = "block";
+                document.querySelector(".error-message").style.display = "none";
+
+                // Cacher la page de connexion et afficher le menu principal
+                setTimeout(() => {
+                    document.getElementById("login-container").style.display = "none";
+                    document.getElementById("menu-container").style.display = "grid";
+                }, 2000);
+            } else {
+                // Connexion échouée
+                document.querySelector(".error-message").style.display = "block";
+                document.querySelector(".success-message").style.display = "none";
+            }
+        });
+    </script>
 
 </body>
 </html>
